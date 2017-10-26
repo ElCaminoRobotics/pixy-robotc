@@ -10,30 +10,30 @@ typedef enum {
 
 static BlockType g_blockType; // use this to remember the next object block type
 
-word getWord(word input, word input2) {
-	word result;
+long getWord(ubyte input, ubyte input2) {
+	long result;
 	result = input2 << 8;
 	writeDebugStreamLine("input2 code is: %x", input2);
-	result = result + input;
+	result = result | input;
 	writeDebugStreamLine("input code is: %x", input);
 	writeDebugStreamLine("input2 code is: %x", input2);
 	return result;
 }
 
 int getStart(const TUARTs uart) {
-	word w, lastw;
-	word word1, word2;
+	long w, lastw;
+	ubyte word1, word2;
 	lastw = 0x0fff;
 	setBaudRate(uart, baudRate19200);
 
 	while(true) {
 		word1 = getChar(uart);
 
-		while(word1 == -1) {
+		while(word1 == 0xff) {
 			word1 = getChar(uart);
 		}
 		word2 = getChar(uart);
-		while(word2 == -1) {
+		while(word2 == 0xff) {
 				word2 = getChar(uart);
 		}
 
